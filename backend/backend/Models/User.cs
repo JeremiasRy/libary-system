@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class User : BaseModel
 {
     [MinLength(2)]
+    [MaxLength(50)]
     public string Firstname { get; set; } = null!;
 
     [MinLength(2)]
+    [MaxLength(50)]
     public string Lastname { get; set; } = null!;
 
     [NotMapped]
@@ -17,6 +19,7 @@ public class User : BaseModel
     public string Fullname => $"{Firstname} {Lastname}";
 
     [MinLength(4)]
+    [MaxLength(50)]
     public string Username { get; set; } = null!;
 
     [EmailAddress]

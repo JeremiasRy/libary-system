@@ -60,6 +60,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Author>()
             .HasIndex(author => new { author.Firstname, author.Lastname })
             .IsUnique();
+        
+        modelBuilder.Entity<Author>()
+            .HasMany(author => author.Books);
 
         modelBuilder.Entity<Loan>()
             .HasKey(loan => new { loan.CopyId, loan.UserId });
