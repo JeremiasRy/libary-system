@@ -4,4 +4,5 @@ public class Author : BaseModel
 {
     public string Firstname { get; set; } = null!;
     public string Lastname { get; set; } = null!;
+    ICollection<Book> Books { get; set; } = null!;
 }
