@@ -54,23 +54,19 @@ public class AppDbContext : DbContext
             .HasIndex(book => book.Title)
             .IsUnique();
 
-        modelBuilder.Entity<Category>()
-            .HasIndex(category => category.Title)
-            .IsUnique();
+        modelBuilder.Entity<BookCategory>()
+            .HasKey(bookCategory => new { bookCategory.CategoryId, bookCategory.BookId });
 
-        modelBuilder.Entity<Author>()
-            .HasIndex(author => new { author.Firstname, author.Lastname })
-            .IsUnique();
-        
-        modelBuilder.Entity<Author>()
-            .HasMany(author => author.Books);
-
-        modelBuilder.Entity<Loan>()
-            .HasKey(loan => new { loan.CopyId, loan.UserId });
+        modelBuilder.Entity<BookAuthor>()
+            .HasKey(bookAuthor => new { bookAuthor.BookId, bookAuthor.AuthorId });
 
         modelBuilder.Entity<Loan>()
             .HasOne(loan => loan.Copy)
             .WithMany();
+
+        modelBuilder.Entity<Loan>()
+            .HasOne(loan => loan.User)
+            .WithOne();
 
         modelBuilder.Entity<CartItem>()
             .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });

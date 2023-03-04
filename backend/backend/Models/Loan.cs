@@ -1,6 +1,6 @@
 ﻿namespace backend.Models;
 
-public class Loan
+public class Loan : BaseModel
 {
     public Copy Copy { get; set; } = null!;
     public User User { get; set; } = null!;

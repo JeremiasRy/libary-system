@@ -1,18 +1,18 @@
-﻿namespace backend.Services.Implementation;
+﻿namespace backend.Services;
 
 using backend.Db;
 using backend.DTOs;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class DbCrudService<TModel, TDto> : ICrudService<TModel, TDto>
+public abstract class DbCrudService<TModel, TDto> : ICrudService<TModel, TDto>
     where TModel : BaseModel, new()
     where TDto : BaseDTO<TModel>
 {
-    private readonly AppDbContext _dbContext;
+    protected readonly AppDbContext _dbContext;
     public DbCrudService(AppDbContext dbContext) => _dbContext = dbContext;
 
-    public virtual async Task<TModel> CreateAsync(TDto request)
+    public virtual async Task<TModel?> CreateAsync(TDto request)
     {
         TModel item = new();
         request.UpdateModel(item);

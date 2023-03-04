@@ -24,6 +24,7 @@ public class User : BaseModel
 
     [EmailAddress]
     public string Email { get; set; } = null!;
+    [JsonIgnore]
     public string Password { get; set; } = null!;
     public ICollection<CartItem> CartItems { get; set; } = null!;
     public ICollection<Loan> Loans { get; set; } = null!;
