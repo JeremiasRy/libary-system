@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
         
         options
             .UseNpgsql(connectionSting)
+            .AddInterceptors(new AppDbContextSaveChangesInterceptors())
             .UseSnakeCaseNamingConvention();
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
