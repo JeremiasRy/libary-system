@@ -35,9 +35,6 @@ public class DbCartItemService : DbCrudService<CartItem, CartItemDTO>, ICartItem
         return await _dbContext
             .Set<CartItem>()
             .Where(cartItem => cartItem.UserId == userId)
-            .Include(cartItem => cartItem.User)
-            .Include(cartItem => cartItem.Copy)
-                .ThenInclude(copy => copy.Book)
             .ToListAsync();
     }
 }

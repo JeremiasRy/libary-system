@@ -13,17 +13,6 @@ public class DbLoanService : DbCrudService<Loan, LoanDTO>, ILoanService
     public DbLoanService(AppDbContext dbContext) : base(dbContext)
     {
     }
-    public override async Task<ICollection<Loan>> GetAllAsync(int page = 1, int pageSize = 50)
-    {
-        return await _dbContext
-            .Set<Loan>()
-            .AsNoTracking()
-            .Include(loan => loan.Copy)
-            .Include(loan => loan.User)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-    }
     public override async Task<Loan?> CreateAsync(LoanDTO request)
     {
         var user = _dbContext.Find<User>(request.UserId);

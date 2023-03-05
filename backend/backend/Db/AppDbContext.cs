@@ -47,21 +47,59 @@ public class AppDbContext : DbContext
             .HasIndex(user => new { user.Firstname, user.Lastname })
             .IsUnique();
 
+        modelBuilder.Entity<User>()
+            .Navigation(user => user.CartItems)
+            .AutoInclude();
+
         modelBuilder.Entity<Loan>()
             .HasOne(loan => loan.User)
             .WithMany()
+            .OnDelete(DeleteBehavior.SetNull)
             .HasForeignKey(loan => loan.UserId);
 
         modelBuilder.Entity<Loan>()
             .HasOne(loan => loan.Copy)
             .WithMany()
+            .OnDelete(DeleteBehavior.SetNull)
             .HasForeignKey(loan => loan.CopyId);
+
+        modelBuilder.Entity<Loan>()
+            .Navigation(loan => loan.Copy)
+            .AutoInclude();
+
+        modelBuilder.Entity<Loan>()
+            .Navigation(loan => loan.User)
+            .AutoInclude();
 
         modelBuilder.Entity<Book>()
             .HasIndex(book => book.Title)
             .IsUnique();
 
+        modelBuilder.Entity<Book>()
+            .Navigation(book => book.Categories)
+            .AutoInclude();
+
+        modelBuilder.Entity<Book>()
+            .Navigation(book => book.Authors)
+            .AutoInclude();
+
         modelBuilder.Entity<CartItem>()
             .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });
+
+        modelBuilder.Entity<CartItem>()
+            .Navigation(cartItem => cartItem.User)
+            .AutoInclude();
+
+        modelBuilder.Entity<CartItem>()
+            .Navigation(cartItem => cartItem.Copy)
+            .AutoInclude();
+
+        modelBuilder.Entity<Copy>()
+            .Navigation(copy => copy.Publisher)
+            .AutoInclude();
+
+        modelBuilder.Entity<Copy>()
+            .Navigation(copy => copy.Book)
+            .AutoInclude();
     }
 }

@@ -12,23 +12,6 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
     {
     }
 
-    public override async Task<ICollection<Book>> GetAllAsync(int page = 1, int pageSize = 50)
-    {
-        return await _dbContext
-            .Set<Book>()
-            .AsNoTracking()
-            .Include(book => book.Categories)
-            .Include(book => book.Authors)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-    }
-    public override async Task<Book?> GetByIdAsync(int id)
-    {
-        var books = await GetAllAsync();
-        return books.FirstOrDefault(book => book.Id == id);
-    }
-
     public async Task<bool> AddAuthorToBook(int id, AddAuthorDTO request)
     {
         var book = await _dbContext.FindAsync<Book>(id);
