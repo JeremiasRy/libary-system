@@ -9,7 +9,7 @@ public class Book : BaseModel
     public string Title { get; set; } = null!;
     [MaxLength(256)]
     public string? Description { get; set; }
-    public ICollection<BookCategory> BookCategoryLinks { get; set; } = null!;
-    public ICollection<BookAuthor> BookAuthorLinks { get; set; } = null!;  
+    public ICollection<Category> Categories { get; set; } = null!;
+    public ICollection<Author> Authors { get; set; } = null!;  
     public ICollection<Copy> Copies { get; set; } = null!;
 }

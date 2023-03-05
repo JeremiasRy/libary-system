@@ -12,14 +12,15 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
     {
     }
 
-    public override async Task<ICollection<Book>> GetAllAsync()
+    public override async Task<ICollection<Book>> GetAllAsync(int page = 1, int pageSize = 50)
     {
         return await _dbContext
             .Set<Book>()
-            .Include(book => book.BookCategoryLinks)
-                .ThenInclude(bc => bc.Category)
-            .Include(book => book.BookAuthorLinks)
-                .ThenInclude(ba => ba.Author)
+            .AsNoTracking()
+            .Include(book => book.Categories)
+            .Include(book => book.Authors)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
     public override async Task<Book?> GetByIdAsync(int id)
@@ -31,11 +32,13 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
     public async Task<bool> AddAuthorToBook(int id, AddAuthorDTO request)
     {
         var book = await _dbContext.FindAsync<Book>(id);
-        if (book == null)
+        var author = await _dbContext.FindAsync<Author>(request.AuthorId);
+
+        if (book is null || author is null)
         {
             return false;
         }
-        book.BookAuthorLinks.Add(new BookAuthor() { BookId = id, AuthorId = request.AuthorId });
+        book.Authors.Add(author);
         await _dbContext.SaveChangesAsync();
         return true;
     }
@@ -43,11 +46,12 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
     public async Task<bool> AddCategoryToBook(int id, AddCategoryDTO request)
     {
         var book = await _dbContext.FindAsync<Book>(id);
-        if (book == null)
+        var category = await _dbContext.FindAsync<Category>(request.CategoryId);
+        if (book is null || category is null)
         {
             return false;
         }
-        book.BookCategoryLinks.Add(new BookCategory() { BookId = id, CategoryId = request.CategoryId });
+        book.Categories.Add(category);
         await _dbContext.SaveChangesAsync();
         return true;
     }

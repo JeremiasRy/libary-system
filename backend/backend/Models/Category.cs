@@ -9,5 +9,5 @@ public class Category : BaseModel
     public string Title { get; set; } = null!;
     [MaxLength(50)]
     public string? Description { get; set; }
-    public ICollection<BookCategory> BookCategoryLinks { get; set; } = null!;
+    public ICollection<Book> Books { get; set; } = null!;
 }

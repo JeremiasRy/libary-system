@@ -33,9 +33,14 @@ public abstract class DbCrudService<TModel, TDto> : ICrudService<TModel, TDto>
         return true;
     }
 
-    public virtual async Task<ICollection<TModel>> GetAllAsync()
+    public virtual async Task<ICollection<TModel>> GetAllAsync(int page = 1, int pageSize = 50)
     {
-        return await _dbContext.Set<TModel>().AsNoTracking().ToListAsync();
+        return await _dbContext
+            .Set<TModel>()
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     public virtual async Task<TModel?> GetByIdAsync(int id)

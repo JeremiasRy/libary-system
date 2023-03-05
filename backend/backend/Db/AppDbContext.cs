@@ -32,8 +32,8 @@ public class AppDbContext : DbContext
                 .Property<DateTime>("CreatedAt")
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity(propertyName)
-               .Property<DateTime>("UpdatedAt")
-               .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                .Property<DateTime>("UpdatedAt")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
         
         modelBuilder.Entity<User>()
@@ -47,26 +47,19 @@ public class AppDbContext : DbContext
             .HasIndex(user => new { user.Firstname, user.Lastname })
             .IsUnique();
 
-        modelBuilder.Entity<User>()
-            .HasMany(user => user.Loans);
+        modelBuilder.Entity<Loan>()
+            .HasOne(loan => loan.User)
+            .WithMany()
+            .HasForeignKey(loan => loan.UserId);
+
+        modelBuilder.Entity<Loan>()
+            .HasOne(loan => loan.Copy)
+            .WithMany()
+            .HasForeignKey(loan => loan.CopyId);
 
         modelBuilder.Entity<Book>()
             .HasIndex(book => book.Title)
             .IsUnique();
-
-        modelBuilder.Entity<BookCategory>()
-            .HasKey(bookCategory => new { bookCategory.CategoryId, bookCategory.BookId });
-
-        modelBuilder.Entity<BookAuthor>()
-            .HasKey(bookAuthor => new { bookAuthor.BookId, bookAuthor.AuthorId });
-
-        modelBuilder.Entity<Loan>()
-            .HasOne(loan => loan.Copy)
-            .WithMany();
-
-        modelBuilder.Entity<Loan>()
-            .HasOne(loan => loan.User)
-            .WithOne();
 
         modelBuilder.Entity<CartItem>()
             .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });
