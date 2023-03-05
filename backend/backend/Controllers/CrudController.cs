@@ -1,6 +1,6 @@
-﻿namespace backend.Controllers;
+﻿namespace Backend.Controllers;
 
-using backend.Services;
+using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 public abstract class CrudController<TModel, TDto> : ApiBaseController
@@ -10,7 +10,6 @@ public abstract class CrudController<TModel, TDto> : ApiBaseController
     {
         _service = service;
     }
-
     [HttpGet]
     public virtual async Task<ICollection<TModel>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 50)
     {

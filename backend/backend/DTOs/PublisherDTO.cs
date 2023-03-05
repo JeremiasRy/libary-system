@@ -1,7 +1,7 @@
-﻿using backend.Models;
+﻿using Backend.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace backend.DTOs;
+namespace Backend.DTOs;
 
 public class PublisherDTO : BaseDTO<Publisher>
 {

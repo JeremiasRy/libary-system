@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backend.Models;
+namespace Backend.Models;
 
 public class Publisher : BaseModel
 {

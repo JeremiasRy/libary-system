@@ -1,8 +1,8 @@
-﻿namespace backend.Db;
+﻿namespace Backend.Db;
 
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using backend.Models;
+using Backend.Models;
 using System.Threading.Tasks;
 using System.Threading;
 

@@ -1,6 +1,6 @@
-﻿using backend.Models;
+﻿using Backend.Models;
 
-namespace backend.DTOs;
+namespace Backend.DTOs;
 
 public class LoanDTO : BaseDTO<Loan>
 {

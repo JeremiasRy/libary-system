@@ -1,9 +1,8 @@
-﻿namespace backend.Services;
+﻿namespace Backend.Services;
 
-using backend.Models;
-using backend.DTOs;
-using backend.Db;
-using Microsoft.EntityFrameworkCore;
+using Backend.Models;
+using Backend.DTOs;
+using Backend.Db;
 using System.Threading.Tasks;
 
 public class DbBookService : DbCrudService<Book, BookDTO>, IBookService

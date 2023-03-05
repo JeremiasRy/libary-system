@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{E6503B14-A161-453C-8FED-5C6B6212E636}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "backend\Backend.csproj", "{E6503B14-A161-453C-8FED-5C6B6212E636}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

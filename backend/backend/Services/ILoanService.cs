@@ -1,7 +1,7 @@
-﻿namespace backend.Services;
+﻿namespace Backend.Services;
 
-using backend.Models;
-using backend.DTOs;
+using Backend.Models;
+using Backend.DTOs;
 public interface ILoanService : ICrudService<Loan, LoanDTO>
 {
     public Task<ICollection<Loan>> GetExpiredLoansAsync();

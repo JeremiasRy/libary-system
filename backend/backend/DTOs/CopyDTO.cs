@@ -1,6 +1,6 @@
-﻿namespace backend.DTOs;
+﻿namespace Backend.DTOs;
 
-using backend.Models;
+using Backend.Models;
 using System.ComponentModel.DataAnnotations;
 public class CopyDTO : BaseDTO<Copy>
 {

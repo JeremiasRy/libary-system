@@ -1,7 +1,7 @@
-﻿using backend.DTOs;
-using backend.Models;
+﻿using Backend.DTOs;
+using Backend.Models;
 
-namespace backend.Services;
+namespace Backend.Services;
 
 public interface ICrudService<TModel, TDto> 
 {

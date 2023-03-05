@@ -1,6 +1,6 @@
-﻿namespace backend.DTOs;
+﻿namespace Backend.DTOs;
 
-using backend.Models;
+using Backend.Models;
 public class CartItemDTO : BaseDTO<CartItem>
 {
     public int CopyId { get; set; }

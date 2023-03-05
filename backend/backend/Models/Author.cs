@@ -1,4 +1,4 @@
-﻿namespace backend.Models;
+﻿namespace Backend.Models;
 
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;

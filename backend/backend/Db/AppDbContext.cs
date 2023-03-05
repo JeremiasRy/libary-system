@@ -1,8 +1,8 @@
-﻿namespace backend.Db;
+﻿namespace Backend.Db;
 
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using backend.Models;
+using Backend.Models;
 
 public class AppDbContext : DbContext
 {

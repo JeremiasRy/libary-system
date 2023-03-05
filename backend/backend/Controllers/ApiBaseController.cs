@@ -1,4 +1,4 @@
-﻿namespace backend.Controllers;
+﻿namespace Backend.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;

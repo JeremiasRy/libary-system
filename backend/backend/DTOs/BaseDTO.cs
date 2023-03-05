@@ -1,4 +1,4 @@
-﻿namespace backend.DTOs;
+﻿namespace Backend.DTOs;
 
 public abstract class BaseDTO<TModel>
 {

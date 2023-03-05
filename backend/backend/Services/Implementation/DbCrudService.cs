@@ -1,8 +1,8 @@
-﻿namespace backend.Services;
+﻿namespace Backend.Services;
 
-using backend.Db;
-using backend.DTOs;
-using backend.Models;
+using Backend.Db;
+using Backend.DTOs;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 public abstract class DbCrudService<TModel, TDto> : ICrudService<TModel, TDto>

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using backend.Models;
-using backend.DTOs;
-using backend.Db;
-using backend.Services;
+using Backend.Models;
+using Backend.DTOs;
+using Backend.Db;
+using Backend.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
