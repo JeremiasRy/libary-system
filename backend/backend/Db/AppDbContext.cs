@@ -41,7 +41,10 @@ public class AppDbContext : DbContext
             .IsUnique();
 
         modelBuilder.Entity<User>()
-            .HasIndex(user => user.Username);
+            .HasIndex(user => user.Firstname);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(user => user.Lastname);
 
         modelBuilder.Entity<User>()
             .HasIndex(user => new { user.Firstname, user.Lastname })
@@ -51,15 +54,19 @@ public class AppDbContext : DbContext
             .Navigation(user => user.CartItems)
             .AutoInclude();
 
+        modelBuilder.Entity<User>()
+            .Navigation(user => user.Loans)
+            .AutoInclude();
+
         modelBuilder.Entity<Loan>()
             .HasOne(loan => loan.User)
-            .WithMany()
+            .WithMany(user => user.Loans)
             .OnDelete(DeleteBehavior.SetNull)
             .HasForeignKey(loan => loan.UserId);
 
         modelBuilder.Entity<Loan>()
             .HasOne(loan => loan.Copy)
-            .WithMany()
+            .WithMany(copy => copy.Loans)
             .OnDelete(DeleteBehavior.SetNull)
             .HasForeignKey(loan => loan.CopyId);
 

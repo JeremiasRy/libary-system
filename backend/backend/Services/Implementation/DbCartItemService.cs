@@ -1,4 +1,4 @@
-﻿namespace backend.Services.Implementation;
+﻿namespace backend.Services;
 
 using backend.Models;
 using backend.DTOs;

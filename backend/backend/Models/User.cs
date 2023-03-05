@@ -27,6 +27,7 @@ public class User : BaseModel
     [JsonIgnore]
     public string Password { get; set; } = null!;
     public ICollection<CartItem> CartItems { get; set; } = null!;
+    public ICollection<Loan> Loans { get; set; } = null!;   
     public UserRole Role { get; set; }
     public enum UserRole
     {

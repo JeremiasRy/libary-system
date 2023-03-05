@@ -1,11 +1,8 @@
-﻿namespace backend.Services.Implementation;
+﻿namespace backend.Services;
 
 using backend.Models;
 using backend.DTOs;
 using backend.Db;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 public class DbPublisherService : DbCrudService<Publisher, PublisherDTO>
 {

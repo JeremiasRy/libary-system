@@ -1,4 +1,4 @@
-﻿namespace backend.Services.Implementation;
+﻿namespace backend.Services;
 
 using backend.Models;
 using backend.DTOs;
@@ -6,7 +6,6 @@ using backend.Db;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 public class DbLoanService : DbCrudService<Loan, LoanDTO>, ILoanService
 {
