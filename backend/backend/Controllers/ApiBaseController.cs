@@ -1,8 +1,12 @@
 ﻿namespace backend.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 [ApiController]
-public abstract class ApiBaseController
+[Produces(MediaTypeNames.Application.Json)]
+[Consumes(MediaTypeNames.Application.Json)]
+[Route("[controller]s")]
+public abstract class ApiBaseController : ControllerBase
 {
 }
