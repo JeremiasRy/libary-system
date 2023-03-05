@@ -17,6 +17,7 @@ public class UserDTO : BaseDTO<User>, IValidatableObject
     {
         model.Username = Username;
         model.Password = Password;
+        model.Email = Email;
         model.Firstname = Firstname;
         model.Lastname = Lastname;
         model.Role = UserRole;

@@ -90,6 +90,10 @@ public class AppDbContext : DbContext
             .Navigation(book => book.Authors)
             .AutoInclude();
 
+        modelBuilder.Entity<Book>()
+            .Navigation(book => book.Copies)
+            .AutoInclude();
+
         modelBuilder.Entity<CartItem>()
             .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });
 
@@ -108,5 +112,23 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Copy>()
             .Navigation(copy => copy.Book)
             .AutoInclude();
+
+        modelBuilder.Entity<Author>()
+            .HasIndex(author => new { author.Firstname, author.Lastname })
+            .IsUnique();
+
+        modelBuilder.Entity<Author>()
+            .HasIndex(author => author.Firstname);
+
+        modelBuilder.Entity<Author>()
+            .HasIndex(author => author.Lastname);
+
+        modelBuilder.Entity<Category>()
+            .HasIndex(category => category.Title)
+            .IsUnique();
+
+        modelBuilder.Entity<Publisher>()
+            .HasIndex(publisher => publisher.PublisherName)
+            .IsUnique();
     }
 }

@@ -4,13 +4,13 @@ using Backend.Models;
 using Backend.DTOs;
 using Backend.Db;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
 {
     public DbBookService(AppDbContext dbContext) : base(dbContext)
     {
     }
-
     public async Task<bool> AddAuthorToBook(int id, AddAuthorDTO request)
     {
         var book = await _dbContext.FindAsync<Book>(id);

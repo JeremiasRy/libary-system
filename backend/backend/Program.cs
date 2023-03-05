@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<ICrudService<Author, AuthorDTO>, DbAuthorService>();
 builder.Services.AddScoped<ICrudService<Category, CategoryDTO>, DbCategoryService>();
 builder.Services.AddScoped<ICrudService<Publisher, PublisherDTO>, DbPublisherService>();
+builder.Services.AddScoped<ICrudService<Copy, CopyDTO>, DbCopyService>();
 builder.Services.AddScoped<ICrudService<User, UserDTO>, DbUserService>();
 builder.Services.AddScoped<IBookService, DbBookService>();
 builder.Services.AddScoped<ICartItemService, DbCartItemService>();

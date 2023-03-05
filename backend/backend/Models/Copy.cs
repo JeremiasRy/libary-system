@@ -2,7 +2,7 @@
 
 public class Copy : BaseModel
 {
-    public bool IsAvailable { get; set; }
+    public bool IsAvailable { get; set; } = true;
     public int PublisherId { get; set; }
     public Publisher Publisher { get; set; } = null!;
     public int BookId { get; set; }

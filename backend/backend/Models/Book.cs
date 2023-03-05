@@ -1,6 +1,7 @@
 ﻿namespace Backend.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Book : BaseModel
 {
@@ -12,4 +13,6 @@ public class Book : BaseModel
     public ICollection<Category> Categories { get; set; } = null!;
     public ICollection<Author> Authors { get; set; } = null!;  
     public ICollection<Copy> Copies { get; set; } = null!;
+    [NotMapped]
+    public int CopiesAvailable { get => Copies == null ? 0 :Copies.Where(copy => copy.IsAvailable).Count(); }
 }

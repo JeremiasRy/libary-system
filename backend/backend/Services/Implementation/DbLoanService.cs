@@ -14,8 +14,9 @@ public class DbLoanService : DbCrudService<Loan, LoanDTO>, ILoanService
     }
     public override async Task<Loan?> CreateAsync(LoanDTO request)
     {
-        var user = _dbContext.Find<User>(request.UserId);
-        if (user == null)
+        var user = await _dbContext.FindAsync<User>(request.UserId);
+        var cartItem = await _dbContext.FindAsync<CartItem>(request.CopyId);
+        if (user is null || cartItem is null)
         {
             return null;
         }
@@ -27,6 +28,7 @@ public class DbLoanService : DbCrudService<Loan, LoanDTO>, ILoanService
         };
         request.UpdateModel(loan);
         _dbContext.Add(loan);
+        _dbContext.Remove(cartItem);
         await _dbContext.SaveChangesAsync();
         return loan;
     }
