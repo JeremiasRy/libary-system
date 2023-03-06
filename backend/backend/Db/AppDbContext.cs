@@ -26,15 +26,12 @@ public class AppDbContext : DbContext
     {
         modelBuilder.HasPostgresEnum<User.UserRole>();
         
-        foreach (var propertyName in modelBuilder.Model.GetEntityTypes().Select(s => s.Name))
-        {
-            modelBuilder.Entity(propertyName)
-                .Property<DateTime>("CreatedAt")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
-            modelBuilder.Entity(propertyName)
-                .Property<DateTime>("UpdatedAt")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP");
-        }
+        modelBuilder.AddTimestampConfig();
+        modelBuilder.AddBookConfig();
+        modelBuilder.AddLoanConfig();
+        modelBuilder.AddPublisherConfig();
+        modelBuilder.AddAuthorConfig();
+        modelBuilder.AddCopyConfig();
         
         modelBuilder.Entity<User>()
             .HasIndex(user => user.Username)
@@ -57,82 +54,5 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .Navigation(user => user.Loans)
             .AutoInclude();
-
-        modelBuilder.Entity<Loan>()
-            .HasOne(loan => loan.User)
-            .WithMany(user => user.Loans)
-            .OnDelete(DeleteBehavior.SetNull)
-            .HasForeignKey(loan => loan.UserId);
-
-        modelBuilder.Entity<Loan>()
-            .HasOne(loan => loan.Copy)
-            .WithMany(copy => copy.Loans)
-            .OnDelete(DeleteBehavior.SetNull)
-            .HasForeignKey(loan => loan.CopyId);
-
-        modelBuilder.Entity<Loan>()
-            .Navigation(loan => loan.Copy)
-            .AutoInclude();
-
-        modelBuilder.Entity<Loan>()
-            .Navigation(loan => loan.User)
-            .AutoInclude();
-
-        modelBuilder.Entity<Book>()
-            .HasIndex(book => book.Title)
-            .IsUnique();
-
-        modelBuilder.Entity<Book>()
-            .Navigation(book => book.Categories)
-            .AutoInclude();
-
-        modelBuilder.Entity<Book>()
-            .Navigation(book => book.Authors)
-            .AutoInclude();
-
-        modelBuilder.Entity<Book>()
-            .Navigation(book => book.Copies)
-            .AutoInclude();
-
-        modelBuilder.Entity<Book>()
-            .Navigation(book => book.Publishers)
-            .AutoInclude();
-
-        modelBuilder.Entity<CartItem>()
-            .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });
-
-        modelBuilder.Entity<CartItem>()
-            .Navigation(cartItem => cartItem.User)
-            .AutoInclude();
-
-        modelBuilder.Entity<CartItem>()
-            .Navigation(cartItem => cartItem.Copy)
-            .AutoInclude();
-
-        modelBuilder.Entity<Copy>()
-            .Navigation(copy => copy.Publisher)
-            .AutoInclude();
-
-        modelBuilder.Entity<Copy>()
-            .Navigation(copy => copy.Book)
-            .AutoInclude();
-
-        modelBuilder.Entity<Author>()
-            .HasIndex(author => new { author.Firstname, author.Lastname })
-            .IsUnique();
-
-        modelBuilder.Entity<Author>()
-            .HasIndex(author => author.Firstname);
-
-        modelBuilder.Entity<Author>()
-            .HasIndex(author => author.Lastname);
-
-        modelBuilder.Entity<Category>()
-            .HasIndex(category => category.Title)
-            .IsUnique();
-
-        modelBuilder.Entity<Publisher>()
-            .HasIndex(publisher => publisher.PublisherName)
-            .IsUnique();
     }
 }
