@@ -1,5 +1,7 @@
 ﻿namespace Backend.Models;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 public class Loan : BaseModel
 {
     public int CopyId { get; set; }
@@ -9,6 +11,7 @@ public class Loan : BaseModel
     public DateTime LoanedAt { get; set; }
     public DateTime DueDate { get; set; }
     public bool Returned { get; set; } = false;
+    [NotMapped]
     public bool ShouldBeReturned { get => DateTime.Now > DueDate; }
 
 }

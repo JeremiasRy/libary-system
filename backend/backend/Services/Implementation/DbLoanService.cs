@@ -6,57 +6,110 @@ using Backend.Db;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
-public class DbLoanService : DbCrudService<Loan, LoanDTO>, ILoanService
+public class DbLoanService : ILoanService
 {
-    public DbLoanService(AppDbContext dbContext) : base(dbContext)
+    private AppDbContext _dbContext;
+    public DbLoanService(AppDbContext dbContext) 
     {
+        _dbContext = dbContext;
     }
-    public override async Task<Loan?> CreateAsync(LoanDTO request)
+
+    public async Task<ICollection<Loan>?> CreateAsync(MakeLoansDTO request)
     {
-        var user = await _dbContext.FindAsync<User>(request.UserId);
-        var cartItem = await _dbContext.FindAsync<CartItem>(request.CopyId);
-        if (user is null || cartItem is null)
+        var user = await _dbContext
+            .Set<User>()
+            .FindAsync(request.UserId);
+
+        if (user is null)
         {
             return null;
         }
-        var loan = new Loan()
-        {
-            LoanedAt = DateTime.Now,
-            DueDate = DateTime.Now.AddMonths(1),
 
-        };
-        request.UpdateModel(loan);
-        _dbContext.Add(loan);
-        _dbContext.Remove(cartItem);
+        var copies = await _dbContext
+            .Set<Copy>()
+            .Where(copy => request.CopyIds.Contains(copy.Id))
+            .ToListAsync();
+
+        if (copies is null)
+        {
+            return null;
+        }
+        copies.ForEach(copy => copy.IsAvailable = false);
+
+        IEnumerable<Loan> loans = copies
+            .Select(copy => new Loan()
+            {
+                CopyId = copy.Id,
+                UserId = user.Id,
+                LoanedAt = DateTime.Now,
+                DueDate = DateTime.Now.AddMonths(1)
+            });
+
+        _dbContext.AddRange(loans);
         await _dbContext.SaveChangesAsync();
-        return loan;
+
+        return loans.ToList();
     }
 
-    public async Task<ICollection<Loan>> GetExpiredLoansAsync()
+    public async Task<ICollection<Loan>> GetAllAsync(int page = 1, int pageSize = 50)
     {
-        var loans = await GetAllAsync();
+        return await _dbContext
+            .Set<Loan>()
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
 
-        return loans
+    public async Task<Loan?> GetByIdAsync(int id)
+    {
+        return await _dbContext.FindAsync<Loan>(id);
+    }
+
+    public async Task<ICollection<Loan>> GetExpiredLoansAsync(int page = 1, int pageSize = 50)
+    {
+        return await _dbContext
+            .Set<Loan>()
+            .AsNoTracking()
             .Where(loan => loan.ShouldBeReturned)
-            .ToList();
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     public async Task<ICollection<Loan>> GetLoansByUserAsync(int userId)
     {
-        var loans = await GetAllAsync();
-
-        return loans
-            .Where(loan => loan.User.Id == userId)
-            .ToList();
+        return await _dbContext
+            .Set<Loan>()
+            .AsNoTracking()
+            .Where(loan => loan.UserId == userId)
+            .ToListAsync();
     }
 
-    public async Task<ICollection<Loan>> GetOnGoingLoansAsync()
+    public async Task<ICollection<Loan>> GetOnGoingLoansAsync(int page = 1, int pageSize = 50)
     {
-        var loans = await GetAllAsync();
-
-        return loans
+        return await _dbContext
+            .Set<Loan>()
+            .AsNoTracking()
             .Where(loan => !loan.Returned)
-            .ToList();
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<Loan?> UpdateAsync(int id, UpdateLoanDTO request)
+    {
+        var loan = await _dbContext.FindAsync<Loan>(id);
+        
+        if (loan == null)
+        {
+            return null;
+        }
+
+        request.UpdateModel(loan);
+        await _dbContext.SaveChangesAsync();
+        return loan;
     }
 }

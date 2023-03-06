@@ -94,6 +94,10 @@ public class AppDbContext : DbContext
             .Navigation(book => book.Copies)
             .AutoInclude();
 
+        modelBuilder.Entity<Book>()
+            .Navigation(book => book.Publishers)
+            .AutoInclude();
+
         modelBuilder.Entity<CartItem>()
             .HasKey(cartItem => new { cartItem.CopyId, cartItem.UserId });
 

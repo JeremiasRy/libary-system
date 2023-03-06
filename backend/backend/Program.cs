@@ -21,7 +21,6 @@ builder.Services.AddScoped<ICrudService<Publisher, PublisherDTO>, DbPublisherSer
 builder.Services.AddScoped<ICrudService<Copy, CopyDTO>, DbCopyService>();
 builder.Services.AddScoped<ICrudService<User, UserDTO>, DbUserService>();
 builder.Services.AddScoped<IBookService, DbBookService>();
-builder.Services.AddScoped<ICartItemService, DbCartItemService>();
 builder.Services.AddScoped<ILoanService, DbLoanService>();
 
 builder.Services
