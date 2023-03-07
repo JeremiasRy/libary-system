@@ -23,12 +23,12 @@ builder.Services
     .AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddScoped<ICrudService<Author, AuthorDTO>, DbAuthorService>();
-builder.Services.AddScoped<ICrudService<Category, CategoryDTO>, DbCategoryService>();
-builder.Services.AddScoped<ICrudService<Publisher, PublisherDTO>, DbPublisherService>();
-builder.Services.AddScoped<ICrudService<Copy, CopyDTO>, DbCopyService>();
-builder.Services.AddScoped<IBookService, DbBookService>();
-builder.Services.AddScoped<ILoanService, DbLoanService>();
+builder.Services.AddScoped<ICrudService<Author, AuthorDTO>, AuthorService>();
+builder.Services.AddScoped<ICrudService<Category, CategoryDTO>, CategoryService>();
+builder.Services.AddScoped<ICrudService<Publisher, PublisherDTO>, PublisherService>();
+builder.Services.AddScoped<ICrudService<Copy, CopyDTO>, CopyService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services
     .AddControllers()

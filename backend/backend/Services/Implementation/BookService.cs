@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
+public class BookService : DbCrudService<Book, BookDTO>, IBookService
 {
-    public DbBookService(AppDbContext dbContext) : base(dbContext)
+    public BookService(AppDbContext dbContext) : base(dbContext)
     {
     }
     public async Task<ICollection<Book>?> GetByTitle(string searchTitle, int page = 1, int pageSize = 50)

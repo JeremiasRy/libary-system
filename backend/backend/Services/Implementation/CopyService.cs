@@ -5,9 +5,9 @@ using Backend.DTOs;
 using Backend.Db;
 using System.Threading.Tasks;
 
-public class DbCopyService : DbCrudService<Copy, CopyDTO>
+public class CopyService : DbCrudService<Copy, CopyDTO>
 {
-    public DbCopyService(AppDbContext dbContext) : base(dbContext)
+    public CopyService(AppDbContext dbContext) : base(dbContext)
     {
     }
 }

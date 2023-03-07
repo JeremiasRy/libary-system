@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-public class DbLoanService : ILoanService
+public class LoanService : ILoanService
 {
     private readonly AppDbContext _dbContext;
-    public DbLoanService(AppDbContext dbContext) 
+    public LoanService(AppDbContext dbContext) 
     {
         _dbContext = dbContext;
     }

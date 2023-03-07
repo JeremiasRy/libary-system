@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-public class DbAuthorService : DbCrudService<Author, AuthorDTO>
+public class AuthorService : DbCrudService<Author, AuthorDTO>
 {
-    public DbAuthorService(AppDbContext dbContext) : base(dbContext)
+    public AuthorService(AppDbContext dbContext) : base(dbContext)
     {
     }
 }
