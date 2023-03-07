@@ -2,9 +2,34 @@
 
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
+using Microsoft.AspNetCore.Identity;
 
 public static class ModelBuilderExtensions
 {
+    public static void AddUserConfig(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<IdentityRole<int>>().ToTable("roles");
+        modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("role_claims");
+        modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("user_claims");
+        modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("user_logins");
+        modelBuilder.Entity<IdentityUserToken<int>>().ToTable("user_tokens");
+        modelBuilder.Entity<IdentityUserRole<int>>().ToTable("user_roles");
+        
+        modelBuilder.Entity<User>()
+           .HasIndex(user => user.Firstname);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(user => user.Lastname);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(user => new { user.Firstname, user.Lastname })
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .Navigation(user => user.Loans)
+            .AutoInclude();
+    }
     public static void AddTimestampConfig(this ModelBuilder modelBuilder)
     {
         foreach (var propertyName in modelBuilder.Model.GetEntityTypes().Select(s => s.Name))

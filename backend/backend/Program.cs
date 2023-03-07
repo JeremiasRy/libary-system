@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+
 using Backend.Models;
 using Backend.DTOs;
 using Backend.Db;
 using Backend.Services;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +19,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddDbContext<AppDbContext>();
 
+builder.Services
+    .AddIdentity<User, IdentityRole<int>>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddScoped<ICrudService<Author, AuthorDTO>, DbAuthorService>();
 builder.Services.AddScoped<ICrudService<Category, CategoryDTO>, DbCategoryService>();
 builder.Services.AddScoped<ICrudService<Publisher, PublisherDTO>, DbPublisherService>();
 builder.Services.AddScoped<ICrudService<Copy, CopyDTO>, DbCopyService>();
-builder.Services.AddScoped<ICrudService<User, UserDTO>, DbUserService>();
 builder.Services.AddScoped<IBookService, DbBookService>();
 builder.Services.AddScoped<ILoanService, DbLoanService>();
 
