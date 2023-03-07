@@ -35,4 +35,11 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         modelBuilder.AddAuthorConfig();
         modelBuilder.AddCopyConfig();
     }
+
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Publisher> Publishers { get; set; }
+    public DbSet<Loan> Loans { get; set; }
+    public DbSet<Copy> Copies { get; set; }
 }

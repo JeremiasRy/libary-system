@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class DbLoanService : ILoanService
 {
-    private AppDbContext _dbContext;
+    private readonly AppDbContext _dbContext;
     public DbLoanService(AppDbContext dbContext) 
     {
         _dbContext = dbContext;
@@ -18,17 +18,14 @@ public class DbLoanService : ILoanService
 
     public async Task<ICollection<Loan>?> CreateAsync(MakeLoansDTO request)
     {
-        var user = await _dbContext
-            .Set<User>()
-            .FindAsync(request.UserId);
+        var user = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.UserId);
 
         if (user is null)
         {
             return null;
         }
 
-        var copies = await _dbContext
-            .Set<Copy>()
+        var copies = await _dbContext.Copies
             .Where(copy => request.CopyIds.Contains(copy.Id))
             .ToListAsync();
 
@@ -36,6 +33,7 @@ public class DbLoanService : ILoanService
         {
             return null;
         }
+
         copies.ForEach(copy => copy.IsAvailable = false);
 
         IEnumerable<Loan> loans = copies
@@ -55,8 +53,7 @@ public class DbLoanService : ILoanService
 
     public async Task<ICollection<Loan>> GetAllAsync(int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Loan>()
+        return await _dbContext.Loans
             .AsNoTracking()
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -70,8 +67,7 @@ public class DbLoanService : ILoanService
 
     public async Task<ICollection<Loan>> GetExpiredLoansAsync(int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Loan>()
+        return await _dbContext.Loans
             .AsNoTracking()
             .Where(loan => loan.ShouldBeReturned)
             .Skip((page - 1) * pageSize)
@@ -81,8 +77,7 @@ public class DbLoanService : ILoanService
 
     public async Task<ICollection<Loan>> GetLoansByUserAsync(int userId)
     {
-        return await _dbContext
-            .Set<Loan>()
+        return await _dbContext.Loans
             .AsNoTracking()
             .Where(loan => loan.UserId == userId)
             .ToListAsync();
@@ -90,8 +85,7 @@ public class DbLoanService : ILoanService
 
     public async Task<ICollection<Loan>> GetOnGoingLoansAsync(int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Loan>()
+        return await _dbContext.Loans
             .AsNoTracking()
             .Where(loan => !loan.Returned)
             .Skip((page - 1) * pageSize)
@@ -101,11 +95,19 @@ public class DbLoanService : ILoanService
 
     public async Task<Loan?> UpdateAsync(int id, UpdateLoanDTO request)
     {
-        var loan = await _dbContext.FindAsync<Loan>(id);
+        var loan = await _dbContext.Loans.SingleOrDefaultAsync(loan => loan.Id == id);
         
         if (loan == null)
         {
             return null;
+        }
+        if (request.Returned)
+        {
+            var copy = await _dbContext.Copies.SingleOrDefaultAsync(copy => copy.Id == loan.CopyId);
+            if (copy is not  null)
+            {
+                copy.IsAvailable = true;
+            }
         }
 
         request.UpdateModel(loan);

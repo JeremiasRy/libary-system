@@ -30,17 +30,17 @@ public class BookController : CrudController<Book, BookDTO>
         return await base.GetAll();
     }
     [HttpPost("{id:int}/categories")]
-    public async Task<bool> AddCategoryToBook([FromRoute] int id, [FromBody] AddCategoryDTO request)
+    public async Task<bool> AddCategoryToBook([FromRoute] int id, [FromBody] AddDTO request)
     {
         return await _bookService.AddCategoryToBook(id, request);
     }
     [HttpPost("{id:int}/authors")]
-    public async Task<bool> AddAuthorToBook([FromRoute] int id, [FromBody] AddAuthorDTO request)
+    public async Task<bool> AddAuthorToBook([FromRoute] int id, [FromBody] AddDTO request)
     {
         return await _bookService.AddAuthorToBook(id, request);
     }
     [HttpPost("{id:int}/publishers")]
-    public async Task<bool> AddPublisherToBook([FromRoute] int id, [FromBody] AddPublisherDTO request)
+    public async Task<bool> AddPublisherToBook([FromRoute] int id, [FromBody] AddDTO request)
     {
         return await _bookService.AddPublisherToBook(id, request);
     }

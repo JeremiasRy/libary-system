@@ -2,8 +2,8 @@
 
 namespace Backend.DTOs;
 
-public class AddAuthorDTO
+public class AddDTO
 {
     [Required]
-    public int AuthorId { get; set; }
+    public int AddId { get; set; }
 }

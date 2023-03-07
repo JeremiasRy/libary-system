@@ -14,47 +14,51 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
     }
     public async Task<ICollection<Book>?> GetByTitle(string searchTitle, int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Book>()
+        return await _dbContext.Books
             .Where(book => book.Title.ToLower().Contains(searchTitle.ToLower()))
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
     }
-    public async Task<bool> AddAuthorToBook(int id, AddAuthorDTO request)
+    public async Task<bool> AddAuthorToBook(int id, AddDTO request)
     {
-        var book = await _dbContext.FindAsync<Book>(id);
-        var author = await _dbContext.FindAsync<Author>(request.AuthorId);
+        var book = await _dbContext.Books.SingleOrDefaultAsync(book => book.Id == id);
+        var author = await _dbContext.Authors.SingleOrDefaultAsync(author => author.Id == request.AddId);
 
         if (book is null || author is null)
         {
             return false;
         }
+
         book.Authors.Add(author);
         await _dbContext.SaveChangesAsync();
         return true;
     }
 
-    public async Task<bool> AddCategoryToBook(int id, AddCategoryDTO request)
+    public async Task<bool> AddCategoryToBook(int id, AddDTO request)
     {
-        var book = await _dbContext.FindAsync<Book>(id);
-        var category = await _dbContext.FindAsync<Category>(request.CategoryId);
+        var book = await _dbContext.Books.SingleOrDefaultAsync(book => book.Id == id);
+        var category = await _dbContext.Categories.SingleOrDefaultAsync(category => category.Id == request.AddId);
+
         if (book is null || category is null)
         {
             return false;
         }
+
         book.Categories.Add(category);
         await _dbContext.SaveChangesAsync();
         return true;
     }
-    public async Task<bool> AddPublisherToBook(int id, AddPublisherDTO request)
+    public async Task<bool> AddPublisherToBook(int id, AddDTO request)
     {
-        var book = await _dbContext.FindAsync<Book>(id);
-        var publisher = await _dbContext.FindAsync<Publisher>(request.PublisherId);
+        var book = await _dbContext.Books.SingleOrDefaultAsync(book => book.Id == id);
+        var publisher = await _dbContext.Publishers.SingleOrDefaultAsync(publisher => publisher.Id == request.AddId);
+
         if (book is null || publisher is null)
         {
             return false;
         }
+
         book.Publishers.Add(publisher);
         await _dbContext.SaveChangesAsync();
         return true;
@@ -62,8 +66,7 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
 
     public async Task<ICollection<Book>?> GetBooksByAuthor(int authorId)
     {
-        return await _dbContext
-            .Set<Book>()
+        return await _dbContext.Books
             .AsNoTracking()
             .Where(book => book.Authors.Select(author => author.Id).Contains(authorId))
             .ToListAsync();
@@ -71,8 +74,7 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
 
     public async Task<ICollection<Book>?> GetBooksByCategory(int categoryId, int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Book>()
+        return await _dbContext.Books
             .AsNoTracking()
             .Where(book => book.Categories.Select(category => category.Id).Contains(categoryId))
             .Skip((page - 1) * pageSize)
@@ -82,8 +84,7 @@ public class DbBookService : DbCrudService<Book, BookDTO>, IBookService
 
     public async Task<ICollection<Book>?> GetBooksByPublisher(int publisherId, int page = 1, int pageSize = 50)
     {
-        return await _dbContext
-            .Set<Book>()
+        return await _dbContext.Books
             .AsNoTracking()
             .Where(book => book.Publishers.Select(publisher => publisher.Id).Contains(publisherId))
             .Skip((page - 1) * pageSize)
