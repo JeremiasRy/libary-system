@@ -1,10 +1,9 @@
 ﻿namespace Backend.Services;
 
-using Backend.Models;
 using Backend.DTOs;
 using Microsoft.AspNetCore.Identity;
 
-public class RoleService
+public class RoleService : IRoleService
 {
     private readonly RoleManager<IdentityRole<int>> _roleManager;
     public RoleService(RoleManager<IdentityRole<int>> roleManager) => _roleManager = roleManager;

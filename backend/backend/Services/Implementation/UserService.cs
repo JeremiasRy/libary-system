@@ -4,10 +4,15 @@ using Backend.DTOs;
 using Backend.Models;
 using Microsoft.AspNetCore.Identity;
 
-public class UserService
+public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
-    public UserService(UserManager<User> userManager) => _userManager = userManager;
+    private readonly IJwtTokenService _jwtTokenService;
+    public UserService(UserManager<User> userManager, IJwtTokenService JwtTokenService)
+    {
+        _userManager = userManager;
+        _jwtTokenService = JwtTokenService;
+    }
     public async Task<User?> SignUp(RegisterDTO request)
     {
         var user = new User()
@@ -24,6 +29,17 @@ public class UserService
             return null;
         }
         return user;
+    }
+    public async Task<SignInResponseDTO?> SignIn(CredentialsDTO request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+
+        if (!await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            return null;
+        }
+        return await _jwtTokenService.GenerateToken(user);
+
     }
     public async Task<bool> AssignRolesToUser(string[] roles, User user)
     {
